@@ -11,7 +11,7 @@ interface EmailRelations {
 async function buildEmail(email: EmailRelations): Promise<Email> {
   const resEmail = new Email();
 
-  resEmail.emailAddress = random.word().slice(0, 255);
+  resEmail.emailAddress = random.word().slice(0, 255) + "@example.com" ;
   resEmail.emailType = getRandomValueFromArray(emailEmailTypeChoices);
   resEmail.message = random.word().slice(0, 2000);
   resEmail.subject = random.word().slice(0, 255);

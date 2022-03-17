@@ -1,12 +1,12 @@
 const swaggerDocument = {
   swagger: '2.0',
-  basePath: '/',
+  basePath: '/api/v1/',
   schemes: ['http'],
   consumes: ['application/json'],
   produces: ['application/json'],
   paths: {
     
-    '/email/': {
+    '/emails/': {
       get: {
         summary: 'Lists all the emails',
         tags: ['email'],
@@ -44,7 +44,7 @@ const swaggerDocument = {
         },
       },
     },
-    '/email/{id}': {
+    '/emails/{id}': {
       get: {
         summary: 'Gets a email by its primary key',
         tags: ['email'],
