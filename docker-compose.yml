@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  nodeserver:
+    build:
+      context: ./
+    expose:
+      - 8000
+    depends_on:
+      - database
+
+    command: sh -c "npm run typeorm migration:run --config .prod.env && npm run start"
+  database:
+    image: postgres
+    hostname: database
+    env_file:
+      - ./.env
+    volumes:
+      - adidas_express_emailpgdata:/var/lib/postgresql/data
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "8000:80"
+    depends_on:
+      - nodeserver
+volumes:
+  adidas_express_emailpgdata:
