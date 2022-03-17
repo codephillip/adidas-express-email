@@ -5,7 +5,7 @@ import { Email } from 'data/models';
 
 const initializeAdminBroRoutes = () =>
   new AdminBro({
-    rootPath: '/admin',
+    rootPath: '/api/' + process.env.API_VERSION + '/emailAdmin',
     resources: [
     {
     resource: Email,
