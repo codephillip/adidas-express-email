@@ -15,22 +15,24 @@ POSTGRES_PASSWORD=<password-to-database>
 3. Install packages and start the application server.
 
 ```
-$ yarn install
-$ yarn start
+$ npm install
+$ npm start
+```
+
 ```
 
 5. Build the application
 
 ```
-$ yarn build
+$ npm build
 ```
 
 6. Generate and apply migrations
 
 ```
-$ yarn typeorm migration:generate --config .dev.env -n database-migrations
-$ yarn build
-$ yarn typeorm migration:run --config .dev.env
+$ npm typeorm migration:generate --config .dev.env -n database-migrations
+$ npm build
+$ npm typeorm migration:run --config .dev.env
 ```
 
 
@@ -49,9 +51,9 @@ With docker-compose running, in another terminal:
 
 ```
 $ docker exec -it docker_name /bin/sh
-$ yarn typeorm migration:generate -n migration_name --config .prod.env
-$ yarn build
-$ yarn typeorm migration:run --config .prod.env
+$ npm typeorm migration:generate -n migration_name --config .prod.env
+$ npm build
+$ npm typeorm migration:run --config .prod.env
 ```
 
 ### Make API calls against the server
@@ -66,13 +68,13 @@ Go to [http://localhost:8000/admin](http://localhost:8000/admin)
 ### Run tests and check code coverage
 
 ```
-$ yarn test
-$ yarn coverage
+$ npm test
+$ npm coverage
 ```
 
 ### Lint your code
 
 ```
-$ yarn lint
-$ yarn format
+$ npm lint
+$ npm format
 ```
