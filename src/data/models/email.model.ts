@@ -12,7 +12,7 @@ export default class Email extends BaseEntity {
 
   @Length(0,255)
   @Column()
-  email: string
+  emailAddress: string
 
   @IsIn(emailEmailTypeChoices)
   @Length(0,255)

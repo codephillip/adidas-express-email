@@ -145,7 +145,7 @@ const swaggerDocument = {
   },
   definitions: {
     Email: {
-      required: ['email','message','subject',],
+      required: ['emailAddress','message','subject',],
       properties: {
         id: {
           type: 'string',
@@ -153,7 +153,7 @@ const swaggerDocument = {
           uniqueItems: true,
           readOnly: true,
         },
-        email: {
+        emailAddress: {
           type: 'string',
           maxLength: 255,
         },
@@ -180,7 +180,7 @@ const swaggerDocument = {
   },
   createUpdateDef: {
     CreateUpdateEmail: {
-      required: ['email','message','subject',],
+      required: ['emailAddress','message','subject',],
       properties: {
         id: {
           type: 'string',
@@ -188,7 +188,7 @@ const swaggerDocument = {
           uniqueItems: true,
           readOnly: true,
         },
-        email: {
+        emailAddress: {
           type: 'string',
           maxLength: 255,
         },

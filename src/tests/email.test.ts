@@ -41,7 +41,7 @@ describe('Email tests', () => {
         relations: [],
     });
 
-    expect(email.email).toBe(fakeEmail.email);
+    expect(email.emailAddress).toBe(fakeEmail.emailAddress);
     expect(email.emailType).toBe(fakeEmail.emailType);
     expect(email.message).toBe(fakeEmail.message);
     expect(email.subject).toBe(fakeEmail.subject);
@@ -66,7 +66,7 @@ describe('Email tests', () => {
     expect(statusCode).toBe(200);
 
     expect(data.id).toBe(fakeEmail.id);
-    expect(data.email).toBe(fakeEmail.email);
+    expect(data.emailAddress).toBe(fakeEmail.emailAddress);
     expect(data.emailType).toBe(fakeEmail.emailType);
     expect(data.message).toBe(fakeEmail.message);
     expect(data.subject).toBe(fakeEmail.subject);
@@ -116,7 +116,7 @@ describe('Email tests', () => {
     const response = await request(app)
       .put(`${ENDPOINT}/${ fakeEmail.id }`)
       .send({
-        email: anotherFakeEmail.email,
+        emailAddress: anotherFakeEmail.emailAddress,
         emailType: anotherFakeEmail.emailType,
         message: anotherFakeEmail.message,
         subject: anotherFakeEmail.subject,
@@ -129,7 +129,7 @@ describe('Email tests', () => {
     expect(status).toBe(200);
     expect(response.statusCode).toBe(200);
 
-    expect(data.email).toBe(anotherFakeEmail.email);
+    expect(data.emailAddress).toBe(anotherFakeEmail.emailAddress);
     expect(data.emailType).toBe(anotherFakeEmail.emailType);
     expect(data.message).toBe(anotherFakeEmail.message);
     expect(data.subject).toBe(anotherFakeEmail.subject);
@@ -137,7 +137,7 @@ describe('Email tests', () => {
 
     const updatedEmail = await emailRepository.findOne(id, { relations: [] });
 
-    expect(updatedEmail.email).toBe(anotherFakeEmail.email);
+    expect(updatedEmail.emailAddress).toBe(anotherFakeEmail.emailAddress);
     expect(updatedEmail.emailType).toBe(anotherFakeEmail.emailType);
     expect(updatedEmail.message).toBe(anotherFakeEmail.message);
     expect(updatedEmail.subject).toBe(anotherFakeEmail.subject);
@@ -156,7 +156,7 @@ describe('Email tests', () => {
     const response = await request(app)
       .put(`${ENDPOINT}/${ id }`)
       .send({
-        email: email.email,
+        email: email.emailAddress,
         emailType: email.emailType,
         message: email.message,
         subject: email.subject,
@@ -194,7 +194,7 @@ describe('Email tests', () => {
 
     const response = await request(app)
       .patch(`${ENDPOINT}/${ fakeEmail.id }`)
-      .send({ email: anotherFakeEmail.email });
+      .send({ emailAddress: anotherFakeEmail.emailAddress });
 
     const { status } = response;
     const { data } = response.body;
@@ -202,11 +202,11 @@ describe('Email tests', () => {
     expect(status).toBe(200);
     expect(response.statusCode).toBe(200);
     
-    expect(data.email).toBe(anotherFakeEmail.email);
+    expect(data.emailAddress).toBe(anotherFakeEmail.emailAddress);
     
     const updatedEmail = await emailRepository.findOne(id)
 
-    expect(updatedEmail.email).toBe(anotherFakeEmail.email);
+    expect(updatedEmail.emailAddress).toBe(anotherFakeEmail.emailAddress);
   });
 
   test('/PATCH - Email does not exists, email cant be updated', async () => {
@@ -214,7 +214,7 @@ describe('Email tests', () => {
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
     const { id } = fakeEmail;
-    const { email } = fakeEmail;
+    const { emailAddress } = fakeEmail;
     await emailRepository.delete(id);
 
     const response = await request(app)

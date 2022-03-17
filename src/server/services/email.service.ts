@@ -3,7 +3,7 @@ import { EmailRepository } from 'data/repositories';
 
 export default class EmailService {
   static create(createBody: {
-    email: string;
+    emailAddress: string;
     message: string;
     subject: string;
     emailType?: string;
@@ -26,7 +26,7 @@ export default class EmailService {
   
   static update(updateBody: {
     id: string;
-    email: string;
+    emailAddress: string;
     message: string;
     subject: string;
     emailType: string;
@@ -37,7 +37,7 @@ export default class EmailService {
 
   static partialUpdate(updateBody: {
     id: string;
-    email?: string;
+    emailAddress?: string;
     message?: string;
     subject?: string;
     emailType?: string;

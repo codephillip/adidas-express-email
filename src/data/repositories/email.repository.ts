@@ -5,7 +5,7 @@ import { NotFound } from 'server/utils/errors';
 
 export default class EmailRepository {
   static async create(createBody: {
-    email: string;
+    emailAddress: string;
     message: string;
     subject: string;
     emailType?: string;
@@ -35,7 +35,7 @@ export default class EmailRepository {
   }
   static async update(updateBody: {
     id: string;
-    email: string;
+    emailAddress: string;
     message: string;
     subject: string;
     emailType: string;
@@ -46,7 +46,7 @@ export default class EmailRepository {
   
   static async partialUpdate(updateBody: {
     id: string;
-    email?: string;
+    emailAddress?: string;
     message?: string;
     subject?: string;
     emailType?: string;
@@ -56,7 +56,7 @@ export default class EmailRepository {
     const foundEmail: Email = await emailRepository.findOne(updateBody.id);
     
     if (!foundEmail) throw new NotFound(`Email with primary key ${ updateBody.id } not found`);
-    if(updateBody.email !== undefined) foundEmail.email = updateBody.email;
+    if(updateBody.emailAddress !== undefined) foundEmail.emailAddress = updateBody.emailAddress;
     if(updateBody.emailType !== undefined) foundEmail.emailType = updateBody.emailType;
     if(updateBody.message !== undefined) foundEmail.message = updateBody.message;
     if(updateBody.subject !== undefined) foundEmail.subject = updateBody.subject;
