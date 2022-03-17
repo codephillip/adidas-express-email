@@ -19,8 +19,6 @@ $ yarn install
 $ yarn start
 ```
 
-```
-
 5. Build the application
 
 ```
