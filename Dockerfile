@@ -10,4 +10,6 @@ FROM node:17.0.1-slim as app
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/prod_node_modules ./node_modules
 COPY . .
+# install common lib from here to ensure that updates are propagated
+RUN npm install @adidastest-phillip/common
 CMD ["npm", "start"]

@@ -1,5 +1,7 @@
 import AdminBroExpress from '@admin-bro/express';
-import { setUpDatabase } from '../data/index';
+import { natsWrapper } from '@adidastest-phillip/common';
+import { SubscriptionCreatedListener } from 'server/events/subscriptionCreatedListener';
+import { setUpDatabase } from 'data/index';
 import { app, setUpAPIRoutes, setUpMiddlewares, useCustomRoute } from './app';
 import initAdminBroRoutes from './routes/adminbro.route';
 
@@ -17,6 +19,14 @@ async function startApp() {
   useCustomRoute(adminBro.options.rootPath, adminbroRouter);
 
   setUpMiddlewares();
+
+  await natsWrapper.connectNatsListener(
+    process.env.NATS_CLUSTER_ID,
+    process.env.NATS_CLIENT_ID,
+    process.env.NATS_URL,
+  );
+
+  new SubscriptionCreatedListener(natsWrapper.client).listen();
 
   /* istanbul ignore next */
   app.listen(PORT, () => {
