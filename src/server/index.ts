@@ -1,9 +1,9 @@
 import AdminBroExpress from '@admin-bro/express';
 import { natsWrapper } from '@adidastest-phillip/common';
-import { SubscriptionCreatedListener } from 'server/events/subscriptionCreatedListener';
 import { setUpDatabase } from 'data/index';
 import { app, setUpAPIRoutes, setUpMiddlewares, useCustomRoute } from './app';
 import initAdminBroRoutes from './routes/adminbro.route';
+import { SubscriptionCreatedListener } from '../events/subscriptionCreatedListener';
 
 /* istanbul ignore next */
 const PORT = process.env.PORT || 8000;

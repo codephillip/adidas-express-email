@@ -2,6 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import {CREATED} from 'http-status';
 import {EmailService} from 'server/services';
 import {NotFound} from 'server/utils/errors';
+import {newsLetterMessage, newsLetterSubscription} from "server/utils/constants/stringUtils";
 
 
 export default class EmailController {
@@ -38,6 +39,14 @@ export default class EmailController {
       const newEmail = await EmailController.runServiceAction(req, EmailService.create);
       res.locals.status = CREATED;
       res.locals.data = newEmail;
+      //TODO ADD firstname to model
+      EmailService.sendEmail(
+        newEmail.emailAddress,
+        newsLetterMessage,
+        newsLetterSubscription,
+        '',
+        newEmail.emailType,
+      );
       return next();
     } catch (error) {
       return next(error);

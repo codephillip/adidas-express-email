@@ -1,10 +1,11 @@
-import {getRepository} from 'typeorm';
+import { getRepository } from 'typeorm';
 import request from 'supertest';
-import {buildEmail, createEmail} from './factories';
-import {Database, setUpRoutesAndMiddlewares} from './utils';
-import {Email} from 'data/models';
-import {app} from 'server/app';
-
+import { Email } from 'data/models';
+import { app } from 'server/app';
+import { EmailService } from 'server/services';
+import { checkEmail } from 'server/utils/constants/stringUtils';
+import { Database, setUpRoutesAndMiddlewares } from './utils';
+import { buildEmail, createEmail } from './factories';
 
 const ENDPOINT = '/api/v1/emails';
 
@@ -48,19 +49,16 @@ describe('Email tests', () => {
     expect(email.message).toBe(fakeEmail.message);
     expect(email.subject).toBe(fakeEmail.subject);
     expect(new Date(email.createdAt)).toStrictEqual(fakeEmail.createdAt);
-
   });
 
-
   test('/GET - Response with a email', async () => {
-
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
 
     const response = await request(app).get(`${ENDPOINT}/${fakeEmail.id}`);
 
-    const {statusCode, status} = response;
-    const {data} = response.body;
+    const { statusCode, status } = response;
+    const { data } = response.body;
 
     expect(status).toBe(200);
     expect(statusCode).toBe(200);
@@ -71,29 +69,27 @@ describe('Email tests', () => {
     expect(data.message).toBe(fakeEmail.message);
     expect(data.subject).toBe(fakeEmail.subject);
     expect(new Date(data.createdAt)).toStrictEqual(fakeEmail.createdAt);
-
   });
 
   test('/GET - Response with a email not found', async () => {
     const emailRepository = getRepository(Email);
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
-    const {id} = fakeEmail;
+    const { id } = fakeEmail;
     await emailRepository.delete(fakeEmail.id);
 
     const response = await request(app).get(`${ENDPOINT}/${id}`);
-    const {statusCode} = response;
+    const { statusCode } = response;
 
     expect(statusCode).toBe(404);
   });
-
 
   test('/GET - Response with a list of emails', async () => {
     const emailRepository = getRepository(Email);
     const response = await request(app).get(ENDPOINT);
 
-    const {statusCode, status} = response;
-    const {data} = response.body;
+    const { statusCode, status } = response;
+    const { data } = response.body;
 
     expect(status).toBe(200);
     expect(statusCode).toBe(200);
@@ -108,23 +104,20 @@ describe('Email tests', () => {
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
 
-
     const anotherFakeEmail = await buildEmail({});
 
-    const {id} = fakeEmail;
+    const { id } = fakeEmail;
 
-    const response = await request(app)
-      .put(`${ENDPOINT}/${fakeEmail.id}`)
-      .send({
-        emailAddress: anotherFakeEmail.emailAddress,
-        emailType: anotherFakeEmail.emailType,
-        message: anotherFakeEmail.message,
-        subject: anotherFakeEmail.subject,
-        createdAt: anotherFakeEmail.createdAt,
-      });
+    const response = await request(app).put(`${ENDPOINT}/${fakeEmail.id}`).send({
+      emailAddress: anotherFakeEmail.emailAddress,
+      emailType: anotherFakeEmail.emailType,
+      message: anotherFakeEmail.message,
+      subject: anotherFakeEmail.subject,
+      createdAt: anotherFakeEmail.createdAt,
+    });
 
-    const {status} = response;
-    const {data} = response.body;
+    const { status } = response;
+    const { data } = response.body;
 
     expect(status).toBe(200);
     expect(response.statusCode).toBe(200);
@@ -135,48 +128,41 @@ describe('Email tests', () => {
     expect(data.subject).toBe(anotherFakeEmail.subject);
     expect(new Date(data.createdAt)).toStrictEqual(anotherFakeEmail.createdAt);
 
-    const updatedEmail = await emailRepository.findOne(id, {relations: []});
+    const updatedEmail = await emailRepository.findOne(id, { relations: [] });
 
     expect(updatedEmail.emailAddress).toBe(anotherFakeEmail.emailAddress);
     expect(updatedEmail.emailType).toBe(anotherFakeEmail.emailType);
     expect(updatedEmail.message).toBe(anotherFakeEmail.message);
     expect(updatedEmail.subject).toBe(anotherFakeEmail.subject);
     expect(new Date(updatedEmail.createdAt)).toStrictEqual(anotherFakeEmail.createdAt);
-
   });
-
 
   test('/PUT - Email does not exists, email cant be updated', async () => {
     const emailRepository = getRepository(Email);
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
-    const {id} = fakeEmail;
+    const { id } = fakeEmail;
     await emailRepository.delete(id);
 
-    const response = await request(app)
-      .put(`${ENDPOINT}/${id}`)
-      .send({
-        emailAddress: email.emailAddress,
-        emailType: email.emailType,
-        message: email.message,
-        subject: email.subject,
-        createdAt: email.createdAt,
-      });
+    const response = await request(app).put(`${ENDPOINT}/${id}`).send({
+      emailAddress: email.emailAddress,
+      emailType: email.emailType,
+      message: email.message,
+      subject: email.subject,
+      createdAt: email.createdAt,
+    });
 
-    const {statusCode} = response;
+    const { statusCode } = response;
     expect(statusCode).toBe(404);
   });
 
   test('/PATCH - Response with an updated email (no updates)', async () => {
-
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
 
-    const response = await request(app)
-      .patch(`${ENDPOINT}/${fakeEmail.id}`)
-      .send({});
+    const response = await request(app).patch(`${ENDPOINT}/${fakeEmail.id}`).send({});
 
-    const {status} = response;
+    const { status } = response;
 
     expect(status).toBe(200);
     expect(response.statusCode).toBe(200);
@@ -187,24 +173,23 @@ describe('Email tests', () => {
 
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
-    const {id} = fakeEmail;
-
+    const { id } = fakeEmail;
 
     const anotherFakeEmail = await buildEmail({});
 
     const response = await request(app)
       .patch(`${ENDPOINT}/${fakeEmail.id}`)
-      .send({emailAddress: anotherFakeEmail.emailAddress});
+      .send({ emailAddress: anotherFakeEmail.emailAddress });
 
-    const {status} = response;
-    const {data} = response.body;
+    const { status } = response;
+    const { data } = response.body;
 
     expect(status).toBe(200);
     expect(response.statusCode).toBe(200);
 
     expect(data.emailAddress).toBe(anotherFakeEmail.emailAddress);
 
-    const updatedEmail = await emailRepository.findOne(id)
+    const updatedEmail = await emailRepository.findOne(id);
 
     expect(updatedEmail.emailAddress).toBe(anotherFakeEmail.emailAddress);
   });
@@ -213,15 +198,13 @@ describe('Email tests', () => {
     const emailRepository = getRepository(Email);
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
-    const {id} = fakeEmail;
-    const {emailAddress} = fakeEmail;
+    const { id } = fakeEmail;
+    const { emailAddress } = fakeEmail;
     await emailRepository.delete(id);
 
-    const response = await request(app)
-      .patch(`${ENDPOINT}/${id}`)
-      .send({emailAddress});
+    const response = await request(app).patch(`${ENDPOINT}/${id}`).send({ emailAddress });
 
-    const {statusCode} = response;
+    const { statusCode } = response;
     expect(statusCode).toBe(404);
   });
 
@@ -230,11 +213,10 @@ describe('Email tests', () => {
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
 
-    const response = await request(app)
-      .delete(`${ENDPOINT}/${fakeEmail.id}`);
+    const response = await request(app).delete(`${ENDPOINT}/${fakeEmail.id}`);
 
-    const {status} = response;
-    const {data} = response.body;
+    const { status } = response;
+    const { data } = response.body;
 
     expect(status).toBe(200);
     expect(response.statusCode).toBe(200);
@@ -249,14 +231,35 @@ describe('Email tests', () => {
     const emailRepository = getRepository(Email);
     const email = await buildEmail({});
     const fakeEmail = await createEmail(email);
-    const {id} = fakeEmail;
+    const { id } = fakeEmail;
     await emailRepository.delete(id);
 
-    const response = await request(app)
-      .delete(`${ENDPOINT}/${id}`);
+    const response = await request(app).delete(`${ENDPOINT}/${id}`);
 
-    const {statusCode} = response;
+    const { statusCode } = response;
     expect(statusCode).toBe(404);
   });
-});
 
+  test('Successful sending email to user', async () => {
+    const result = EmailService.sendEmail('hello@example.com', 'Message', 'Subject', 'Phillip');
+    expect(result).toBe(true);
+  });
+
+  test('Successful sending email to user without firstname', async () => {
+    const result = EmailService.sendEmail('hello@example.com', 'Message', 'Subject');
+    expect(result).toBe(true);
+  });
+
+  test('Failed sending email to user', async () => {
+    const result = EmailService.sendEmail('helloexample.com', '', 'Subject', 'Phillip');
+    expect(result).toBe(false);
+  });
+
+  test('Check email contains @', () => {
+    expect(checkEmail('codephillip@gmail.com')).toBe(true);
+  });
+
+  test('Check email without @ is reject', () => {
+    expect(checkEmail('codephillipgmail.com')).toBe(false);
+  });
+});

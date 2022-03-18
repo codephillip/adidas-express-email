@@ -6,24 +6,21 @@ import {
   SubscriptionCreatedEvent,
 } from '@adidastest-phillip/common';
 import {EmailService} from 'server/services';
+import {newsLetterMessage, newsLetterSubscription} from "server/utils/constants/stringUtils";
+
 
 /**
- * - Receives details about a subscription from unmc-express-sub(subscription service)
+ * Receives details about a subscription from adidas-express-sub(subscription service)
  * */
 export class SubscriptionCreatedListener extends Listener<SubscriptionCreatedEvent> {
-  readonly subject = Subjects.SubscriptionCreatedCreated;
+  readonly subject = Subjects.SubscriptionCreated;
   readonly queueGroupName = QueueGroupNames.EmailService;
 
   async onMessage(data: SubscriptionCreatedEvent['data'], msg: Message) {
     try {
       const {email, firstName} = data;
       console.log(`message received - ${msg.getSequence()}${email}${firstName}`);
-      EmailService.create({
-        emailAddress: email,
-        message: 'Thank you for subscribing to the newsletter',
-        subject: 'Newsletter subscription',
-        emailType: 'Newsletter',
-      });
+      EmailService.sendEmail(email, newsLetterMessage, newsLetterSubscription, firstName);
     } catch (err) {
       console.error(err);
     } finally {
