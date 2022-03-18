@@ -17,6 +17,7 @@ import {
 const app = express();
 
 function setUpAPIRoutes() {
+  process.env.API_VERSION = process.env.API_VERSION !== undefined ? process.env.API_VERSION : 'v1';
   // Swagger
   app.use('/swagger', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
 
@@ -28,7 +29,7 @@ function setUpAPIRoutes() {
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(initResLocalsHandler);
 
-  app.use('/email', emailRouter);
+  app.use(`/api/${process.env.API_VERSION}/emails`, emailRouter);
 
 }
 

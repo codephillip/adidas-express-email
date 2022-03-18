@@ -19,8 +19,6 @@ $ npm install
 $ npm start
 ```
 
-```
-
 5. Build the application
 
 ```
