@@ -1,5 +1,5 @@
 import { EmailRepository } from 'data/repositories';
-import {checkEmail, newsLetterMessage, newsLetterSubscription} from 'server/utils/constants/stringUtils';
+import { checkEmail } from 'server/utils/constants/stringUtils';
 
 export default class EmailService {
   static create(createBody: {
@@ -60,17 +60,15 @@ export default class EmailService {
     firstName?: string,
     emailType?: string,
   ) {
-    if (email.length && message.length && subject.length) {
-      if (checkEmail(email)) {
-        console.log(`sent email to user email address ${email}`);
-        this.create({
-          emailAddress: email,
-          message: `Hi ${firstName ?? 'User'}, ${message}`,
-          subject,
-          emailType: emailType ?? 'Newsletter',
-        });
-        return true;
-      }
+    if (email.length && message.length && subject.length && checkEmail(email)) {
+      console.log(`sent email to user email address ${email}`);
+      this.create({
+        emailAddress: email,
+        message: `Hi ${firstName ?? 'User'}, ${message}`,
+        subject,
+        emailType: emailType ?? 'Newsletter',
+      });
+      return true;
     }
     return false;
   }

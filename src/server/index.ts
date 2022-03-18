@@ -4,6 +4,7 @@ import { setUpDatabase } from 'data/index';
 import { app, setUpAPIRoutes, setUpMiddlewares, useCustomRoute } from './app';
 import initAdminBroRoutes from './routes/adminbro.route';
 import { SubscriptionCreatedListener } from '../events/subscriptionCreatedListener';
+import { SubscriptionCancelledListener } from '../events/subscriptionCancelledListener';
 
 /* istanbul ignore next */
 const PORT = process.env.PORT || 8000;
@@ -27,6 +28,7 @@ async function startApp() {
   );
 
   new SubscriptionCreatedListener(natsWrapper.client).listen();
+  new SubscriptionCancelledListener(natsWrapper.client).listen();
 
   /* istanbul ignore next */
   app.listen(PORT, () => {

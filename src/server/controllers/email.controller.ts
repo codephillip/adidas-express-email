@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import {CREATED} from 'http-status';
 import {EmailService} from 'server/services';
 import {NotFound} from 'server/utils/errors';
-import {newsLetterMessage, newsLetterSubscription} from "server/utils/constants/stringUtils";
+import {newsLetterMessage, newsLetterSubscriptionSubject} from "server/utils/constants/stringUtils";
 
 
 export default class EmailController {
@@ -43,7 +43,7 @@ export default class EmailController {
       EmailService.sendEmail(
         newEmail.emailAddress,
         newsLetterMessage,
-        newsLetterSubscription,
+        newsLetterSubscriptionSubject,
         '',
         newEmail.emailType,
       );
