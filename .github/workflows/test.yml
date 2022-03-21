@@ -6,12 +6,10 @@ name: Run Tests
 on:
   push:
   schedule:
-    - cron:  '0 16 * * *'
+    - cron: '0 16 * * *'
 
 jobs:
-
   build:
-
     runs-on: ${{ matrix.os }}
     services:
       postgres:
@@ -26,8 +24,8 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node-version: [16.0]
+        os: [ ubuntu-latest ]
+        node-version: [ 16.0 ]
     env:
       POSTGRES_DB: test
       POSTGRES_USER: test
