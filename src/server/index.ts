@@ -33,7 +33,7 @@ async function startApp() {
   /* istanbul ignore next */
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
-    console.log(`Express server listening on port ${PORT}`);
+    console.log(`Express server listening on port # ${PORT}`);
   });
 }
 

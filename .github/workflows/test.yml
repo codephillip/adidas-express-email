@@ -35,9 +35,8 @@ jobs:
         run: npm run test
       - name: Create coverage report
         run: yarn coverage
-    # Uncomment after setting CODECOV_TOKEN in your repository
-    # - name: Upload coverage to Codecov
-    #   uses: codecov/codecov-action@v1
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     directory: ./coverage
+     - name: Upload coverage to Codecov
+       uses: codecov/codecov-action@v1
+       with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+         directory: ./coverage
