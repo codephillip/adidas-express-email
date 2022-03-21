@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+env:
+  IMAGE: adidas_express_email
+  REGISTRY: us.gcr.io
+  CONTAINER: adidas-express-email
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -19,12 +24,12 @@ jobs:
       - name: Deploy
         uses: shashank0202/docker-build-push-gcr-update-gke-deployment-action@v1.0
         with:
-          service_account: ${{ secrets.GCLOUD_AUTH}}
-          zone: 'europe-west2-c'
-          project_id: 'sixth-loader-344609'
-          registry: 'us.gcr.io'
-          image_name: 'adidas_express_email'
-          cluster: 'adidasttestcluster'
-          namespace: 'default'
-          deployment: 'adidas-express-email-depl'
-          container: 'adidas-express-email'
+          service_account: ${{ secrets.GCLOUD_AUTH }}
+          zone: ${{ secrets.GKE_ZONE }}
+          project_id: ${{ secrets.GKE_PROJECT }}
+          registry: ${{ env.REGISTRY }}
+          image_name: ${{ env.IMAGE }}
+          cluster: ${{ secrets.GKE_CLUSTER }}
+          namespace: ${{ secrets.GKE_NAMESPACE }}
+          deployment: ${{ secrets.GKE_DEPLOYMENT }}
+          container: ${{ secrets.CONTAINER }}
