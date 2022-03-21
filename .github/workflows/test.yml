@@ -61,7 +61,7 @@ jobs:
           image_name: 'adidas_express_email'
           cluster: 'adidasttestcluster'
           namespace: 'default'
-          deployment: 'adidas-express-emaildemo-depl'
+          deployment: 'adidas-express-email-depl'
           container: 'adidas_express_email'
     # Uncomment after setting CODECOV_TOKEN in your repository
     # - name: Upload coverage to Codecov
