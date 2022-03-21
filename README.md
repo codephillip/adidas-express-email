@@ -1,5 +1,6 @@
 # adidas_express_email app
 
+[![Build Status](https://app.travis-ci.com/codephillip/adidas-express-email.svg?branch=main)](https://app.travis-ci.com/codephillip/adidas-express-email)
 [![codecov](https://codecov.io/gh/codephillip/adidas-express-email/branch/main/graph/badge.svg?token=32KL7MFBVI)](https://codecov.io/gh/codephillip/adidas-express-email)
 
 ### Run the app in terminal
