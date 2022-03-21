@@ -33,30 +33,30 @@ jobs:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Cache Node.js modules
-        uses: actions/cache@v2
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm run test
-      - name: Create coverage report
-        run: yarn coverage
+#      - uses: actions/checkout@v2
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v2
+#        with:
+#          # npm cache files are stored in `~/.npm` on Linux/macOS
+#          path: ~/.npm
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install dependencies
+#        run: npm install
+#      - name: Run tests
+#        run: npm run test
+#      - name: Create coverage report
+#        run: yarn coverage
       - name: Deploy to GKE
         uses: actions/docker-build-push-gcr-update-gke-deployment-action@v1.4
         with:
-          service_account: ${{ secrests.GCLOUD_AUTH}}
+          service_account: ${{ secrets.GCLOUD_AUTH}}
           zone: 'europe-west2-c'
           project_id: 'sixth-loader-344609'
           registry: 'us.gcr.io'
