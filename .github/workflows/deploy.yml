@@ -32,4 +32,7 @@ jobs:
           cluster: ${{ secrets.GKE_CLUSTER }}
           namespace: ${{ secrets.GKE_NAMESPACE }}
           deployment: ${{ secrets.GKE_DEPLOYMENT }}
-          container: ${{ secrets.CONTAINER }}
+          # Container name can be difficult to find, let alone understand
+          # https://stackoverflow.com/questions/58516617/kubectl-set-image-error-arguments-in-resource-name-form-may-not-have-more-than
+          container: ${{ env.CONTAINER }}
+      - run: kubectl rollout restart deployment ${{ secrets.GKE_DEPLOYMENT }}
