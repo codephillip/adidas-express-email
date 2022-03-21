@@ -35,4 +35,15 @@ jobs:
           # Container name can be difficult to find, let alone understand
           # https://stackoverflow.com/questions/58516617/kubectl-set-image-error-arguments-in-resource-name-form-may-not-have-more-than
           container: ${{ env.CONTAINER }}
-      - run: kubectl rollout restart deployment ${{ secrets.GKE_DEPLOYMENT }}
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ secrets.GKE_ZONE }}
+          credentials: ${{ secrets.GCLOUD_AUTH }}
+      # Deploy the Docker image to the GKE cluster
+      - name: Restart deployment
+        run: kubectl rollout restart deployment ${{ secrets.GKE_DEPLOYMENT }}
