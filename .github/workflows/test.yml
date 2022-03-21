@@ -54,7 +54,7 @@ jobs:
 #      - name: Create coverage report
 #        run: yarn coverage
       - name: Deploy to GKE
-        uses: actions/docker-build-push-gcr-update-gke-deployment-action@v1.0
+        uses: shashank0202/docker-build-push-gcr-update-gke-deployment-action@1.4
         with:
           service_account: ${{ secrets.GCLOUD_AUTH}}
           zone: 'europe-west2-c'
